@@ -7,23 +7,41 @@ var gIntervalAliens
 var gAliensTopRowIdx
 var gAliensBottomRowIdx
 var gIsAlienFreeze = true
+var gAliens 
+
 
 function createAliens(board) {
     var row = ALIEN_ROW_COUNT - 1 // i =2 
     var col = BOARD_SIZE - ALIEN_ROW_LENGTH
 
+    var aliens = []
+
     for (var i = row; i <= ALIEN_ROW_COUNT + 1; i++) {
         for (var j = col; j < BOARD_SIZE; j++) {
             board[i][j] = createCell(ALIEN)
+            aliens[i][j] = createCell(ALIEN)
         }
     }
+    console.log(aliens);
     return board
 }
-function handleAlienHit(pos) { }
-function shiftBoardRight(board, fromI, toI) { }
-function shiftBoardLeft(board, fromI, toI) { }
-function shiftBoardDown(board, fromI, toI) { }
+
+
+function handleAlienHit(pos) {
+
+}
+function shiftBoardRight(board, fromI, toI) {
+
+}
+function shiftBoardLeft(board, fromI, toI) {
+
+}
+function shiftBoardDown(board, fromI, toI) {
+
+}
 // runs the interval for moving aliens side to side and down
 // it re-renders the board every time
 // when the aliens are reaching the hero row - interval stops
-function moveAliens() { }
+function moveAliens() {
+
+}

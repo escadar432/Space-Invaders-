@@ -23,10 +23,12 @@ function init() {
     createHero(gBoard)
     createAliens(gBoard)
     renderBoard(gBoard)
+    shoot()
+
+    //clearInterval(laserInterval)
 }
 // Create and returns the board with aliens on top, ground at bottom
 // use the functions: createCell, createHero, createAliens
-
 
 
 function createBoard() {
@@ -44,7 +46,6 @@ function createBoard() {
 function renderBoard(board) {
     var eBoard = document.querySelector(".board")
     var strHTML = ''
-    console.log(board);
 
     for (var i = 0; i < BOARD_SIZE; i++) {
         strHTML += `<tr>`
@@ -53,12 +54,9 @@ function renderBoard(board) {
             var cell = board[i][j].gameObject ? board[i][j].gameObject : ''
 
             if (i === BOARD_SIZE - 1) strHTML += `<td class="cell ${i} ${j} footer"> ${FOOTER}</td>`
-            else strHTML += `<td class="cell ${i} ${j}">${cell}</td>`
+            else strHTML += `<td class="cell-${i}-${j}">${cell}</td>`
         }
-
-
         strHTML += `</tr>`
-
     }
     eBoard.innerHTML = strHTML
 }
@@ -69,9 +67,23 @@ function createCell(gameObject = null) {
         gameObject: gameObject
     }
 }
-// position such as: {i: 2, j: 7}
+
+function updateCellHero(nextLocation, gameObject) {
+
+    gBoard[gHero.pos.i][nextLocation.j].gameObject = gameObject
+    gBoard[gHero.pos.i][gHero.pos.j].gameObject = null
+
+    gHero.pos.j = nextLocation.j
+
+    var elCell = getElCell(nextLocation.i, nextLocation.j)
+    elCell.innerHTML = gameObject || ''
+    renderBoard(gBoard)
+    console.log(gBoard)
+}
+
+
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
     var elCell = getElCell(pos)
     elCell.innerHTML = gameObject || ''
-}
+    }

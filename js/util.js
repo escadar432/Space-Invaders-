@@ -5,6 +5,8 @@ function createCell(gameObject = null) {
         gameObject: gameObject
     }
 }
-function getElCell(pos) {
-    return document.querySelector(`[data-i='${pos.i}'][dataj='${pos.j}']`)
+
+function getElCell(i,j) {
+    return document.querySelector(`.cell-${i}-${j}`)
 }
+
