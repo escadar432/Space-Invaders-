@@ -1,10 +1,7 @@
 const LASER_SPEED = 80
 var gHero =
-    { pos: { i: 12, j: 5 }, isShoot: false }
+    { pos: { i: 12, j: 8 }, isShoot: false }
 
-
-var gLASER =
-    { pos: { i: 12, j: 5 }, status: false }
 
 var laserInterval
 
@@ -18,46 +15,58 @@ function createHero(board) {
 
 // Handle game keys
 function onKeyDown(ev) {
-
-    //if (!gGame.isOn) return
+    if (!gGame.isOn) return
     if (ev.key === 'ArrowRight') moveHero(1)
     if (ev.key === 'ArrowLeft') moveHero(-1)
+    if (ev.keyCode === 32) shoot()
     else return
 }
 // Move the hero right (1) or left (-1)
 function moveHero(dir) {
+    var newPos = gHero.pos.j + dir
+    if (newPos < 0 || newPos > BOARD_SIZE - 1) return
 
-    var newCell = gHero.pos.j + dir
-    if (newCell < 0 || newCell > BOARD_SIZE - 1) return
-
-    var nextLocation = {
+    var nextPos = {
         i: gHero.pos.i,
-        j: newCell
+        j: newPos
     }
-
-    updateCellHero(nextLocation, HERO)
+    updateCell(nextPos, HERO)
+    updateCell(gHero.pos)
+    gHero.pos.j = newPos
 }
 
 // Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot() {
 
-
-    laserInterval = setInterval(blinkLaser, 1000)
-
+    if (gHero.isShoot) return
+    gHero.isShoot = true
+    var nextPos = {
+        i: gHero.pos.i,
+        j: gHero.pos.j
+    }
+    laserInterval = setInterval(function () { blinkLaser(nextPos); }, 100)
 }
 
+function blinkLaser(nextPos) {
+    --nextPos.i
+    if (gBoard[nextPos.i][nextPos.j].gameObject) {
+        updateCell(nextPos)
+        clearInterval(laserInterval)
+        handleAlienHit()
+        return
+    }
 
-// renders a LASER at specific cell for short time and removes it
-function blinkLaser(pos) {
+    updateCell(nextPos, LASER)
 
-
-    // var dir = gHero.pos.i--
-
-    // gBoard[gHero.pos.i--][gHero.pos.j] = {
-    //     type: SKY,
-    //     gameObject: LASER
-    // }
-
-    // var laserDir = gHero.pos.i--
-    // updateLaser(laserDir, gLASER)
+    if (nextPos.i <= 0) {
+        updateCell(nextPos)
+        clearInterval(laserInterval)
+        gHero.isShoot = false
+        return
+    } else {
+        setTimeout(function () {
+            updateCell(nextPos)
+        }, 1000)
+    }
 }
+

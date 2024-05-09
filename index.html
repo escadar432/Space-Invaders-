@@ -9,9 +9,15 @@
 </head>
 
 <body onload="init()" onkeyup="onKeyDown(event)">
-   <span> Aliens-Wensday</span>
-   <table class="board"></table>
 
+   <span class="score">Score</span>
+   <span class="alienCount">Aliens on board</span>
+
+
+   <table class="board"></table>
+   <div class="alien"></div>
+   <i class="fa-thin fa-alien" style="color: #63E6BE;"></i>
+   <button> Restart</button>
    <script src="js/game.js"></script>
    <script src="js/util.js"></script>
    <script src="js/aliens.js"></script>

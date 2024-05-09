@@ -3,8 +3,11 @@ const ALIEN_ROW_LENGTH = 8
 const ALIEN_ROW_COUNT = 3
 const HERO = '♆'
 const ALIEN = '👽'
-const LASER = '⤊'
-const FOOTER = `🔶`
+const LASER = '🚀'
+//const LASER = '/css/img/rocket.jpg'
+//const FOOTER = `🔶`
+// const AIEN = '👾'
+const FOOTER = `--`
 const LIFE = `⚰️`
 const SKY = 'SKY'
 const GROUND = 'GROUND'
@@ -13,19 +16,26 @@ const GROUND = 'GROUND'
 var gBoard
 var gGame = {
     isOn: false,
-    alienCount: 0
+    alienCount: 24
 }
+var gScore
 
 
 // Called when game loads
 function init() {
+
     gBoard = createBoard()
     createHero(gBoard)
     createAliens(gBoard)
     renderBoard(gBoard)
-    shoot()
 
-    //clearInterval(laserInterval)
+    gScore = 0
+    updateEl(".score", gScore)
+    updateEl(".alienCount", gGame.alienCount)
+
+    gIsAlienFreeze = false
+    moveAliens()
+
 }
 // Create and returns the board with aliens on top, ground at bottom
 // use the functions: createCell, createHero, createAliens
@@ -37,7 +47,8 @@ function createBoard() {
     for (var i = 0; i < BOARD_SIZE; i++) {
         board.push([])
         for (var j = 0; j < BOARD_SIZE; j++) {
-            board[i][j] = createCell()
+            var cell = createCell()
+            board[i].push(cell)
         }
     }
     return board
@@ -68,22 +79,14 @@ function createCell(gameObject = null) {
     }
 }
 
-function updateCellHero(nextLocation, gameObject) {
-
-    gBoard[gHero.pos.i][nextLocation.j].gameObject = gameObject
-    gBoard[gHero.pos.i][gHero.pos.j].gameObject = null
-
-    gHero.pos.j = nextLocation.j
-
-    var elCell = getElCell(nextLocation.i, nextLocation.j)
-    elCell.innerHTML = gameObject || ''
-    renderBoard(gBoard)
-    console.log(gBoard)
-}
-
 
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
     var elCell = getElCell(pos)
     elCell.innerHTML = gameObject || ''
-    }
+}
+
+function gameOver() {
+    clearInterval(gIntervalAliens)
+    gGame.isOn = false
+}

@@ -6,7 +6,12 @@ function createCell(gameObject = null) {
     }
 }
 
-function getElCell(i,j) {
-    return document.querySelector(`.cell-${i}-${j}`)
+function getElCell(pos) {
+    return document.querySelector(`.cell-${pos.i}-${pos.j}`)
 }
 
+
+function updateEl(selector, value = 0) {
+    var element = document.querySelector(selector)
+    element.innerText = value
+}
